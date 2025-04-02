@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fbc605;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Title Bar */
+        .title-bar {
+            width: 100%;
+            background: #222;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            font-size: 22px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .title-text {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .logo {
+            height: 50px;
+            width: auto;
+        }
+        /* Title Bar Styling */
+/* Navigation Bar Styling */
+.navbar {
+    background: linear-gradient(90deg, #007bff, #0056b3); /* Gradient background */
+    padding: 15px 20px; /* Increased padding for a more spacious look */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.navbar h2 {
+    color: white; /* White text for the title */
+    margin: 0; /* Remove default margin */
+    font-size: 24px; /* Larger font size for the title */
+}
+
+.navbar button {
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding around buttons */
+    margin: 0 10px; /* Margin between buttons */
+    font-size: 18px; /* Font size for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.navbar button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+/* Navigation Bar Styling */
+.navbar {
+    background: linear-gradient(90deg, #f4f5f5, #fcfeff); /* Gradient background */
+    padding: 15px 20px; /* Increased padding for a more spacious look */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.navbar h2 {
+    color: rgb(0, 0, 0); /* White text for the title */
+    margin: 0; /* Remove default margin */
+    font-size: 24px; /* Larger font size for the title */
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar ul li {
+    display: inline;
+    margin: 0 20px; /* Increased margin for better spacing */
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: rgb(10, 10, 10); /* White text for links */
+    font-size: 18px; /* Font size for links */
+    padding: 10px 15px; /* Padding around links */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.navbar ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+#about {
+    padding: 40px;
+    text-align: center;
+    background: #f5f5f5;
+    margin-top: 20px;
+}
+
+.student-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.student {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 250px;
+}
+
+.student img {
+    width: 100px; /* Adjust as needed */
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.student h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.student p {
+    font-size: 14px;
+    color: #666;
+}
+
+
+
+        
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            margin-top: 80px;
+            flex-grow: 1;
+            height:calc(100vh-80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: url('https://source.unsplash.com/1600x900/?finance,business') no-repeat center center/cover;
+            background-size: cover;
+            color: rgb(10, 10, 10);
+            text-shadow: 2px 2px 10px rgba(246, 243, 243, 0.955);
+            padding: 20px;
+            text-align: center;
+        }
+        .centered-heading {
+    font-size: 50px; /* Font size for the heading */
+    text-transform: uppercase; /* Uppercase text */
+    margin: 0; /* Remove default margin */
+}
+
+        .main-content h1 {
+            font-size: 50px;
+            text-transform: uppercase;
+        }
+
+        .main-content p {
+            font-size: 20px;
+        }
+
+        /* Content Sections */
+        .content {
+            display: none;
+            padding: 40px;
+            background: white;
+            margin-left: 270px;
+            margin-top: 80px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Program Buttons - Square Shape */
+        .program-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .program-buttons button {
+            width: 100px;
+            height: 150px;
+            display: inline-block;
+            text-align: center;
+            line-height: 150px;
+            border: none;
+            background: #ffea00;
+            color: rgb(8, 7, 7);
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .program-buttons button:hover {
+            background: #f3d303;
+            transform: scale(1.05);
+        }
+
+        .experiment-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            margin-top: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+            .content {
+                margin-left: 210px;
+            }
+            .title-bar {
+                font-size: 18px;
+                padding: 8px;
+            }
+            .logo {
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <!-- Title Bar with Logos -->
+    <div class="title-bar">
+        <img src="college-logo.png.jpg" alt="College Logo" class="logo">
+        <span class="title-text">K S SCHOOL OF ENGINEERING AND MANAGEMENT</span>
+        <img src="department-logo.png.jpg" alt="Department Logo" class="logo">
+    </div>
+    
+    
+
+    <!-- Sidebar Navigation -->
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Navigation</h2>
+        <button onclick="window.open('https://plum-ways-870316.framer.app/', '_blank')">Home</button>
+        <button onclick="location.href='#about'">About Us</button>
+        <button onclick="location.href='#programs'">Programs</button>
+        
+    </div>
+
+
+    <!-- Homepage -->
+    <div class="main-content" id="home">
+        <h1 class="centered-heading">Financial Management</h1>
+        <p>Manage your finances efficiently with the best tools and resources.</p>
+    </div>
+    <!-- About Us Section -->
+<section id="about">
+    <h2>About Us</h2>
+    <p>This website was created by students of K S School of Engineering and Management as part of their Financial Management project.</p>
+
+    <div class="student-container">
+
+        <!-- Student 1 -->
+        <div class="student">
+            <img src="WhatsApp Image 2025-04-02 at 11.10.50.jpeg" alt="Ankitha R">
+            <h3>Ankitha R</h3>
+            <p>USN: 1KG23CB004</p>
+        </div>
+
+        <!-- Student 2 -->
+        <div class="student">
+            <img src="WhatsApp Image 2025-04-02 at 10.43.56.jpeg" alt="Pruthvi Hegde">
+            <h3>Pruthvi Hegde</h3>
+            <p>USN: 1KG23CB039</p>
+        </div>
+
+        <!-- Student 3 -->
+        <div class="student">
+            <img src="WhatsApp Image 2025-04-02 at 10.46.05.jpeg" alt="Bhumika Karanth">
+            <h3>Bhumika Karanth</h3>
+            <p>USN: 1KG23CB010</p>
+        </div>
+
+    </div>
+</section>
+
+
+    <!-- Programs Section -->
+    <section id="programs">
+        <h2>Programs</h2>
+        <p>Select an experiment to view details:</p>
+
+        <div class="program-buttons">
+            <button onclick="loadExperiment(1)">Experiment 1</button>
+            <button onclick="loadExperiment(2)">Experiment 2</button>
+            <button onclick="loadExperiment(3)">Experiment 3</button>
+            <button onclick="loadExperiment(4)">Experiment 4</button>
+            <button onclick="loadExperiment(5)">Experiment 5</button>
+            <button onclick="loadExperiment(6)">Experiment 6</button>
+            <button onclick="loadExperiment(7)">Experiment 7</button>
+          
+        </div>
+
+        <div id="experiment-content" class="experiment-content"></div>
+    </section>
+    
+
+    <script>
+        function loadExperiment(expNum) {
+            let contentBox = document.getElementById("experiment-content");
+
+            // Clear previous content
+            contentBox.innerHTML = "";
+
+            // Insert new content
+            contentBox.innerHTML = `
+                <h3>Experiment ${expNum}</h3>
+                <p>Details for Experiment ${expNum}: This is where experiment details will be loaded dynamically.</p>
+            `;
+
+            // Make it visible
+            contentBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(1)">Experiment 1</button>
+    <div id="experiment-content-1" class="experiment-content">
+        <h3>Experiment 1: Payment Option Analysis</h3>
+        <p>Mr. Raghu sells goods with two payment options:</p>
+        <ul>
+            <li><b>Option 1:</b> Pay ₹2500 now.</li>
+            <li><b>Option 2:</b> Pay ₹900 at the end of each year for three years.</li>
+        </ul>
+
+        <h4>Given Information:</h4>
+        <ul>
+            <li><b>Discount Rate:</b> 10% (0.1)</li>
+            <li><b>Number of Years:</b> 3</li>
+            <li><b>Payments:</b> ₹900 per year</li>
+        </ul>
+
+        <h4>Present Value Calculation:</h4>
+        <table border="1">
+            <tr>
+                <th>Year</th>
+                <th>Amount (₹)</th>
+            </tr>
+            <tr><td>1</td><td>900</td></tr>
+            <tr><td>2</td><td>900</td></tr>
+            <tr><td>3</td><td>900</td></tr>
+        </table>
+
+        <p>Using formula, the present value is **₹2238.17**</p>
+        <p>Using Excel, the present value is **₹2238.17**</p>
+
+        <h4>Conclusion:</h4>
+        <p><b>The customer should select Option 2</b> as its present value is lower than Option 1.</p>
+    </div>
+</div>
+<script>
+    function loadExperiment(expNum) {
+        // Hide all experiment contents
+        document.querySelectorAll(".experiment-content").forEach(content => {
+            content.style.display = "none";
+        });
+
+        // Show the selected experiment
+        document.getElementById("experiment-content-" + expNum).style.display = "block";
+    }
+</script>
+</body>
+<!-- Experiment 2 -->
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(2)">Experiment 2</button>
+    <div id="experiment-content-2" class="experiment-content" style="display: none;">
+        <h3>Experiment 2: Bank Deposit Offer Decision</h3>
+        <p>A bank offers an investor to deposit ₹16,000 and receive ₹1,800 annually forever.</p>
+
+        <h4>Given Information:</h4>
+        <ul>
+            <li><b>Initial Investment:</b> ₹16,000</li>
+            <li><b>Annual Cash Flow:</b> ₹1,800</li>
+        </ul>
+
+        <h4>Case 1: Rate of Return = 12%</h4>
+        <ul>
+            <li><b>Present Value of Perpetuity:</b> ₹15,000</li>
+            <li><b>Decision:</b> Offer will be <b>rejected</b> as the present value is less than the initial investment.</li>
+        </ul>
+
+        <h4>Case 2: Rate of Return = 10%</h4>
+        <ul>
+            <li><b>Present Value of Perpetuity:</b> ₹18,000</li>
+            <li><b>Decision:</b> Offer will be <b>accepted</b> as the present value is greater than the initial investment.</li>
+        </ul>
+    </div>
+</div>
+<script>
+    function loadExperiment(expNum) {
+        // Hide all experiment contents
+        document.querySelectorAll(".experiment-content").forEach(content => {
+            content.style.display = "none";
+        });
+
+        // Show the selected experiment
+        document.getElementById("experiment-content-" + expNum).style.display = "block";
+    }
+</script>
+<!-- Experiment 3 -->
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(3)">Experiment 3</button>
+    <div id="experiment-content-3" class="experiment-content" style="display: none;">
+        <h3>Experiment 3: Recurring Deposit Future Value Calculation</h3>
+        <p>A recurring deposit of ₹100 is made at the beginning of each year for different durations at a 6% interest rate.</p>
+
+        <h4>Given Information:</h4>
+        <ul>
+            <li><b>Cash Flow:</b> ₹100 (every year)</li>
+            <li><b>Rate of Interest:</b> 6% (0.06)</li>
+            <li><b>Duration:</b> 4, 6, 10, and 15 years</li>
+        </ul>
+
+        <h4>Future Values:</h4>
+        <ul>
+            <li><b>At the end of 4 years:</b> ₹463.71</li>
+            <li><b>At the end of 6 years:</b> ₹739.38</li>
+            <li><b>At the end of 10 years:</b> ₹1,397.16</li>
+            <li><b>At the end of 15 years:</b> ₹2,467.25</li>
+        </ul>
+    </div>
+</div>
+<script>
+    function loadExperiment(expNum) {
+        // Hide all experiment contents
+        document.querySelectorAll(".experiment-content").forEach(content => {
+            content.style.display = "none";
+        });
+
+        // Show the selected experiment
+        document.getElementById("experiment-content-" + expNum).style.display = "block";
+    }
+</script>
+<!-- Experiment 4 -->
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(4)">Experiment 4</button>
+    <div id="experiment-content-4" class="experiment-content" style="display: none;">
+        <h3>Experiment 4: Sinking Fund Calculation</h3>
+        <p>A company is establishing a sinking fund to retire ₹500,000, 8% debentures, 10 years from today.</p>
+
+        <h4>Given Information:</h4>
+        <ul>
+            <li><b>Target Amount:</b> ₹500,000</li>
+            <li><b>Debenture Rate:</b> 8%</li>
+            <li><b>Investment Earning Rate:</b> 6%</li>
+            <li><b>Duration:</b> 10 years</li>
+            <li><b>Compounded Value Factor (CVFA) for 6% over 10 years:</b> 13.181</li>
+        </ul>
+
+        <h4>Calculated Annual Contributions:</h4>
+        <ul>
+            <li><b>Using Formula:</b> ₹37,933.98</li>
+            <li><b>Using PV Factor from CVAF Table:</b> ₹37,933.39</li>
+            <li><b>Using Excel Formula:</b> ₹37,933.98</li>
+        </ul>
+
+        <h4>Conclusion:</h4>
+        <p>The company must contribute <b>₹37,933.39</b> annually to accumulate ₹500,000 in 10 years.</p>
+    </div>
+</div>
+<script>
+    function loadExperiment(expNum) {
+        document.querySelectorAll(".experiment-content").forEach(content => {
+            content.style.display = "none";
+        });
+
+        document.getElementById("experiment-content-" + expNum).style.display = "block";
+    }
+</script>
+<!-- Experiment 5 -->
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(5)">Experiment 5</button>
+    <div id="experiment-content-5" class="experiment-content" style="display: none;">
+        <h3>Experiment 5: Net Present Value (NPV) Calculation</h3>
+        <p>A machine is available for ₹170,000 with a lifespan of 5 years and generates varying cash flows.</p>
+
+        <h4>Given Information:</h4>
+        <ul>
+            <li><b>Initial Investment:</b> ₹170,000</li>
+            <li><b>Required Rate of Return:</b> 10%</li>
+            <li><b>Cash Flows Over 5 Years:</b></li>
+            <ul>
+                <li>Year 1: ₹20,000</li>
+                <li>Year 2: ₹50,000</li>
+                <li>Year 3: ₹60,000</li>
+                <li>Year 4: ₹40,000</li>
+                <li>Year 5: ₹75,000</li>
+            </ul>
+        </ul>
+
+        <h4>NPV Calculation Using Discounted Cash Flows:</h4>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Year</th>
+                <th>Cash Flow (₹)</th>
+                <th>Discount Factor (10%)</th>
+                <th>Present Value (₹)</th>
+            </tr>
+            <tr><td>0</td><td>-170,000</td><td>1.000</td><td>-170,000</td></tr>
+            <tr><td>1</td><td>20,000</td><td>1.100</td><td>18,182</td></tr>
+            <tr><td>2</td><td>50,000</td><td>1.210</td><td>41,322</td></tr>
+            <tr><td>3</td><td>60,000</td><td>1.331</td><td>45,079</td></tr>
+            <tr><td>4</td><td>40,000</td><td>1.464</td><td>27,321</td></tr>
+            <tr><td>5</td><td>75,000</td><td>1.611</td><td>46,569</td></tr>
+            <tr><td colspan="3"><b>Total NPV:</b></td><td><b>₹8,473</b></td></tr>
+        </table>
+
+        <h4>Conclusion:</h4>
+        <p>The NPV of the project is positive (₹8,473), hence the project should be <b>accepted</b>.</p>
+    </div>
+</div>
+<script>
+    function loadExperiment(expNum) {
+        document.querySelectorAll(".experiment-content").forEach(content => {
+            content.style.display = "none";
+        });
+
+        document.getElementById("experiment-content-" + expNum).style.display = "block";
+    }
+</script>
+
+<!-- Experiment 6 -->
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(6)">Experiment 6</button>
+    <div id="experiment-content-6" class="experiment-content" style="display: none;">
+        <h3>Experiment 6: Internal Rate of Return (IRR) Calculation</h3>
+        <p>A firm is evaluating a project costing ₹160,000 and generating future cash flows.</p>
+
+        <h4>Given Information:</h4>
+        <ul>
+            <li><b>Initial Investment:</b> ₹160,000</li>
+            <li><b>Hurdle Rate:</b> 12%</li>
+            <li><b>Cash Flows Over 5 Years:</b></li>
+            <ul>
+                <li>Year 1: ₹40,000</li>
+                <li>Year 2: ₹60,000</li>
+                <li>Year 3: ₹50,000</li>
+                <li>Year 4: ₹50,000</li>
+                <li>Year 5: ₹40,000</li>
+            </ul>
+        </ul>
+
+        <h4>IRR Calculation Using PV Factors:</h4>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Year</th>
+                <th>Cash Flow (₹)</th>
+                <th>PV Factor @ 15%</th>
+                <th>Present Value (₹) @ 15%</th>
+                <th>PV Factor @ 16%</th>
+                <th>Present Value (₹) @ 16%</th>
+            </tr>
+            <tr><td>1</td><td>40,000</td><td>0.87</td><td>34,800</td><td>0.862</td><td>34,480</td></tr>
+            <tr><td>2</td><td>60,000</td><td>0.756</td><td>45,360</td><td>0.743</td><td>44,580</td></tr>
+            <tr><td>3</td><td>50,000</td><td>0.658</td><td>32,900</td><td>0.641</td><td>32,050</td></tr>
+            <tr><td>4</td><td>50,000</td><td>0.572</td><td>28,600</td><td>0.552</td><td>27,600</td></tr>
+            <tr><td>5</td><td>40,000</td><td>0.497</td><td>19,880</td><td>0.476</td><td>19,040</td></tr>
+            <tr><td colspan="3"><b>Total PV:</b></td><td><b>₹161,540</b></td><td></td><td><b>₹157,750</b></td></tr>
+        </table>
+
+        <h4>IRR Calculation:</h4>
+        <p>Using formula:  
+        <br><b>IRR = Lower Rate + [(PV @ Lower Rate - Initial Cost) / (PV @ Lower Rate - PV @ Higher Rate)] × (Higher Rate - Lower Rate)</b></p>
+        <p>IRR = <b>15.40%</b></p>
+
+        <h4>Conclusion:</h4>
+        <p>Since **IRR (15.40%) > Hurdle Rate (12%)**, the project should be <b>accepted</b>.</p>
+    </div>
+</div>
+<script>
+    function loadExperiment(expNum) {
+        document.querySelectorAll(".experiment-content").forEach(content => {
+            content.style.display = "none";
+        });
+
+        document.getElementById("experiment-content-" + expNum).style.display = "block";
+    }
+</script>
+<!-- Experiment 7 -->
+<div class="experiment">
+    <button class="experiment-btn" onclick="loadExperiment(7)">Experiment 7</button>
+    <div id="experiment-content-7" class="experiment-content" style="display: none;">
+        <h3>Experiment 7: Payback Period Calculation for Machine Selection</h3>
+        <p>ITC Ltd. is evaluating three machines based on their investment returns using the <b>Payback Period Method</b>.</p>
+
+        <h4>Given Information:</h4>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Details</th>
+                <th>Machine 1</th>
+                <th>Machine 2</th>
+                <th>Machine 3</th>
+            </tr>
+            <tr><td>Initial Investment (₹)</td><td>300,000</td><td>300,000</td><td>300,000</td></tr>
+            <tr><td>Estimated Annual Sales (₹)</td><td>500,000</td><td>400,000</td><td>450,000</td></tr>
+            <tr><td>Scrap Value (₹)</td><td>40,000</td><td>25,000</td><td>30,000</td></tr>
+            <tr><td>Life of Machine (Years)</td><td>2</td><td>3</td><td>3</td></tr>
+        </table>
+
+        <h4>Cost of Production & Profit Calculation:</h4>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Cost/Profit Elements</th>
+                <th>Machine 1 (₹)</th>
+                <th>Machine 2 (₹)</th>
+                <th>Machine 3 (₹)</th>
+            </tr>
+            <tr><td>Direct Materials</td><td>40,000</td><td>50,000</td><td>48,000</td></tr>
+            <tr><td>Direct Labour</td><td>50,000</td><td>30,000</td><td>36,000</td></tr>
+            <tr><td>Factory Overheads</td><td>60,000</td><td>50,000</td><td>58,000</td></tr>
+            <tr><td>Administration Costs</td><td>20,000</td><td>10,000</td><td>15,000</td></tr>
+            <tr><td>Selling & Distribution Costs</td><td>10,000</td><td>10,000</td><td>10,000</td></tr>
+            <tr><td><b>Total Production Cost</b></td><td>310,000</td><td>241,667</td><td>257,000</td></tr>
+        </table>
+
+        <h4>Payback Period Calculation:</h4>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Details</th>
+                <th>Machine 1</th>
+                <th>Machine 2</th>
+                <th>Machine 3</th>
+            </tr>
+            <tr><td>Depreciation (₹)</td><td>130,000</td><td>91,667</td><td>90,000</td></tr>
+            <tr><td>Cash Flow Before Taxes (₹)</td><td>190,000</td><td>158,333</td><td>193,000</td></tr>
+            <tr><td>Taxes (30%) (₹)</td><td>57,000</td><td>47,500</td><td>57,900</td></tr>
+            <tr><td>Cash Flow After Taxes (₹)</td><td>263,000</td><td>202
+                <script>
+                    function loadExperiment(expNum) {
+                        document.querySelectorAll(".experiment-content").forEach(content => {
+                            content.style.display = "none";
+                        });
+                
+                        document.getElementById("experiment-content-" + expNum).style.display = "block";
+                    }
+   </script>
